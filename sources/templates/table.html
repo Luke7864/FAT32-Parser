@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>FAT32 Parser</title>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/bootstrap.css')}}">
+</head>
+<body>
+<h3>Now On: {{DirEntry[0]["filename"]}}</h3>
+<div align="right">
+<button type="button" class="btn btn-danger" onclick="location.href='/delete'">Remove Img</button><br>
+</div>
+<p> * 디렉토리의 row를 클릭할 경우, 해당 디렉토리의 내부를 탐색할 수 있습니다.</p>
+<p> * 파일의 row를 클릭할 경우, 해당 파일을 카빙하여 저장할 수 있습니다.</p>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th scope="col">Cluster #</th>
+            <th scope="col">Filename</th>
+            <th scope="col">Status</th>
+            <th scope="col">File-Type</th>
+            <th scope="col">File Size(Byte)</th>
+            <th scope="col">Created Date</th>
+            <th scope="col">Created Time</th>
+            <th scope="col">Modified Date</th>
+            <th scope="col">Modified Time</th>
+        </tr>
+    </thead>
+
+    <tbody>
+    {% for de in DirEntry %}
+        <tr onclick=window.location='/carve?cluster={{de["cluster"]}}&size={{ de["filesize"] }}&type={{de["type"]}}';>
+            <th scope="row">{{de["cluster"]}}</th>
+            <td>{{de["filename"]}}</td>
+            <td>{{de["status"]}}</td>
+            <td>{{de["type"]}}</td>
+            <td>{{de["filesize"]}}</td>
+            <td>{{de["createdate"]}}</td>
+            <td>{{de["createtime"]}}</td>
+            <td>{{de["lastwrittendate"]}}</td>
+            <td>{{de["lastwrittentime"]}}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<br>
+<h3>Disk Image Info</h3>
+<p> - OEM: {{diskinfo[0]}}</p>
+<p> - reservedSector: {{diskinfo[1]}}</p>
+<p> - sectorsPerCluster: {{diskinfo[2]}}</p>
+<p> - FAT_Tables: {{diskinfo[3]}}</p>
+<p> - mediaType: {{diskinfo[4]}}</p>
+<p> - totalSector: {{diskinfo[5]}}</p>
+<p> - fatAreaSize: {{diskinfo[6]}}</p>
+<p> - rootDirectoryClusterOffset: {{diskinfo[7]}}</p>
+<p> - fsinfoOffset: {{diskinfo[8]}}</p>
+<p> - backupBootSector: {{diskinfo[9]}}</p>
+<p> - volumeSerialNumber: {{diskinfo[10]}}</p>
+<p> - volumeLabel: {{diskinfo[11]}}</p>
+<p> - fileSystemType: {{diskinfo[12]}}</p>
+
+<script type="text/javascript" src="{{url_for('static',filename='js/bootstrap.js')}}"></script>
+</body>
+</html>
